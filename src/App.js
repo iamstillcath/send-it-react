@@ -40,9 +40,6 @@ function App() {
             <Route path="/admin">
               <Admin/>
             </Route>
-            {/* <Route path="/placeFun">
-              <PlacesFun/>
-            </Route> */}
           </Switch>
         </div>
       </div>
