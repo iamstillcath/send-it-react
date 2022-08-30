@@ -189,6 +189,7 @@ const Admin = () => {
                     handleCurrent(item._id);
                     // setOpenModal(true);
                   }}
+                  disabled={item.status === "delivered" ? true : false}
                 >current
                 </button>
               </td>

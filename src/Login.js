@@ -1,14 +1,21 @@
-import { useState } from "react";
+import { useState} from "react";
 import { Link } from "react-router-dom";
 import "./Login.css";
+import { useHistory } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
   const [emailerr, setemailerr] = useState("");
+  const history =useHistory()
+  
+
+
 
   const handleSubmit = (e) => {
+    
     e.preventDefault();
+ 
     const login = {
       email,
       password,
@@ -47,9 +54,9 @@ const Login = () => {
             const role = localStorage.getItem("role");
             if (role === "user") {
               alert("login succesful!");
-              window.location.href = "/order";
+              history.push("/order")
             } else {
-              window.location.href = "/admin";
+              history.push("/admin");
             }
           } else {
             alert(res.message);
@@ -113,7 +120,7 @@ const Login = () => {
         </button>
 
         <p className="loginSign">
-          Don't have an account?<Link to="/register">Register</Link>
+          Don't have an account?<Link to="/">Register</Link>
         </p>
         <p className="homePage">
           <Link to="/">Back to Homepage</Link>

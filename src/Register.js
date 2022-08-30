@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 import PlacesAutocomplete from "react-places-autocomplete";
+import { useHistory } from "react-router-dom";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -13,8 +14,9 @@ const Register = () => {
   const [phoneErr, setphoneErr] = useState("");
   const [passErr, setPass] = useState("");
   const [lengthErr, setLengtherr] = useState("");
-
+  const history=useHistory()
   const handleSubmit = (e) => {
+ 
     e.preventDefault();
     const register = {
       name,
@@ -47,9 +49,9 @@ const Register = () => {
             console.log("this is role in register", role);
             if (role === "user") {
               alert("login succesful!");
-              window.location.href = "/order";
+              history.push("/order") ;
             } else {
-              window.location.href = "/admin";
+              history.push("/admin") ;
             }
           } else {
             alert(res.message);
@@ -207,6 +209,9 @@ const Register = () => {
             setpassword(e.target.value);
             passLength(e.target.value);
           }}
+          onInput={(e)=>{passValid(e.target.value)}
+        }
+          
           className="form-control form-group"
         />
         <p style={{ color: "red" }}> {lengthErr}</p>
@@ -220,8 +225,8 @@ const Register = () => {
           value={confirmPassword}
           onChange={(e) => {
             setconfirmPassword(e.target.value);
-            passValid(e.target.value);
           }}
+          onInput={(e)=>{passValid(e.target.value)}}
           className="form-control form-group"
         />
         <p style={{ color: "red" }}> {passErr}</p>

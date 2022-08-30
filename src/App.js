@@ -8,7 +8,6 @@ import Order from "./Order";
 import Place from "./Place"
 import User from "./User";
 import Admin from "./Admin";
-// import PlacesFun from "./PlacesFun";
 
 function App() {
   return (
@@ -17,11 +16,11 @@ function App() {
   
         <div className="path">
           <Switch>
-            <Route exact path="/">
+            <Route exact path="/home">
               <Home />
               <Content/>
             </Route>
-            <Route path="/register">
+            <Route exact path="/">
               <Register />
             </Route>
             <Route path="/login">

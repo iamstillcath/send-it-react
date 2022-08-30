@@ -30,7 +30,7 @@ const Content = () => {
    */}
  
     
-<h3>Copyright &copy; 2022. All rights reserved!</h3>
+<h4>Copyright &copy; 2022. All rights reserved!</h4>
         </div>
      );
 }

@@ -24,7 +24,7 @@ input {
     }
 
     .login{
-        font-size: 28px;
+        font-size: 20px;
     }
 
 .loginSign{
@@ -55,6 +55,20 @@ link{
         align-items: center;
         justify-content: center;
         margin-left: 5px;
+}
+
+.signup{
+  width: 150px;
+  height: 40px;
+  color: black;
+  background-color: white;
+  font-size: 22px;
+  font-family: "Times New Roman", Times, serif;
+  border-radius: 5px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  margin-left: 5px;
 
 }
 
@@ -62,6 +76,7 @@ table ,tr,td,th{
     border: 1px solid black;
     padding: 4px;
     text-align: center;
+    /* visibility: hidden; */
 
    
 }

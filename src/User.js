@@ -4,17 +4,18 @@ import React, { useEffect, useState } from "react";
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from "react-router-dom";
 import Modal from "./Modal";
+import { useHistory } from "react-router-dom";
 
 const User = () => {
   const [data, setData] = useState([]);
   const [openModal, setOpenModal] = useState(false);
-
+  const [show, setShow] = useState(true);
+  const history = useHistory();
 
   const token = localStorage.getItem("token");
-  if(!token){
-    window.location="/login"
+  if (!token) {
+    window.location = "/login";
   }
-
 
   const url = "https://backfiles.herokuapp.com";
   useEffect(() => {
@@ -31,8 +32,8 @@ const User = () => {
     })
       .then((res) => res.json())
       .then((parcels) => {
-        if (!parcels) {
-          setData("You do not have any Order yet");
+        if (parcels.length === 0) {
+          setShow(false);
         } else {
           setData(parcels);
         }
@@ -44,7 +45,7 @@ const User = () => {
 
   const handleDelete = (id) => {
     const url = "https://backfiles.herokuapp.com";
-   alert("do you want to delete");
+    alert("do you want to delete");
     fetch(`${url}/parcels/${id}/delete`, {
       method: "DELETE",
       headers: {
@@ -58,8 +59,7 @@ const User = () => {
       .then((res) => res.json())
       .then((res) => {
         if (res.message === "Order Deleted") {
-          window.location = "/user";
-          alert("Order successfully Deleted!");
+          alert("parcel deleted")
         } else {
           alert(res.error);
         }
@@ -67,18 +67,15 @@ const User = () => {
   };
 
   const handleEdit = (id) => {
-    console.log("this is data",data)
-    const newState = data.map(obj => {
+    const newState = data.map((obj) => {
       if (obj._id === id) {
-        return {...obj, openModal:true};
+        return { ...obj, openModal: true };
       }
-    return obj;
-   
+
+      return obj;
     });
     setData(newState);
-    console.log("this is current==>",newState)
     localStorage.setItem("id", id);
- 
   };
 
   const handleLogout = () => {
@@ -95,8 +92,9 @@ const User = () => {
           </button>
         </Link>
         <br></br>
-
-        <a href="/order">CREATE ORDER</a>
+        <Link to="/order">
+          <p>CREATE ORDER</p>
+        </Link>
         <h2 className="header"> Order list</h2>
         <ul className="list-group">
           <li className="list">
@@ -122,13 +120,15 @@ const User = () => {
           </li>
         </ul>
       </div>
-      <table className="table">
+      <table
+        className="table"
+        style={{ visibility: show ? "visible" : "hidden" }}
+      >
         <thead className="table">
           <tr>
             <th scope="col">Id</th>
             <th scope="col">Item description</th>
             <th scope="col">price</th>
-            {/* <th scope="col">weight</th> */}
             <th scope="col">Pickup Location</th>
             <th scope="col">Destination</th>
             <th scope="col">Current location</th>
@@ -153,24 +153,26 @@ const User = () => {
               <td>{item.status}</td>
 
               <td className="edit">
-                {item.openModal &&<Modal closeModal={setOpenModal} />}
+                {item.openModal && <Modal closeModal={setOpenModal} />}
                 <button
-                 
                   onClick={() => {
                     handleEdit(item._id);
-                    // setOpenModal(true);
-                  }
-                }
-                >Edit
-                 
-                 {/* <faFontAwesome className="fas fa-edit"></faFontAwesome> */}
+                  }}
+                  disabled={item.status === "delivered" ? true : false}
+                >
+                  Edit
+                  {/* <faFontAwesome className="fas fa-edit"></faFontAwesome> */}
                 </button>
               </td>
               <td className="delete">
-                <button
-                  onClick={() => handleDelete(item._id)}
-                >Delete
-                </button>
+                <Link to="/order">
+                  <button
+                    onClick={() => handleDelete(item._id)}
+                    disabled={item.status === "delivered" ? true : false}
+                  >
+                    Delete
+                  </button>
+                </Link>
               </td>
             </tr>
           ))}

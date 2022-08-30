@@ -1,15 +1,18 @@
+import { type } from '@testing-library/user-event/dist/type';
 import React ,{useState}from 'react';
-import PlacesAutocomplete from "react-places-autocomplete";
+import { useHistory } from "react-router-dom";
 
-function Modalcurrent() {
+const Modalcurrent= ()=> {
     const [currentLocation, setcurrentLocation] = useState("");
+    const history=useHistory()
     localStorage.setItem("currentLocation", currentLocation);
   
     const token = localStorage.getItem("token");
     const id = localStorage.getItem("id");
     const currentLocations = localStorage.getItem("currentLocation");
-    const url = "https://backfiles.herokuapp.com";
+   
     const edit = () => {
+      const url = "https://backfiles.herokuapp.com";
       fetch(`${url}/parcels/${id}/currentLocation`, {
         method: "PUT",
         headers: {
@@ -23,23 +26,21 @@ function Modalcurrent() {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log("this is edit res==>", data);
-          if (data.message === "Current Location  updated") {
-            window.location = "/admin";
-            console.log("parcel edited");
+          if (data.message === "Current Location updated") {
+            
+            window.location.href("/admin")
           } else {
             alert(data.error)
-            window.location = "/admin";
+           
           }
         });
     };
   return (
     <div className="pageBackground">
       <div className="modalBackground">
-      <PlacesAutocomplete
+      {/* <PlacesAutocomplete
           value={currentLocation}
           onChange={(e) => setcurrentLocation(e.target.value)}
-          // onSelect={this.handleSelect}
         >
           {({
             getInputProps,
@@ -51,14 +52,12 @@ function Modalcurrent() {
               <input
               required
                 {...getInputProps({
-                  
-                  placeholder: "Address...",
+                  placeholder: "Current Location...",
                   className: "location-search-input",
                 })}
               />
               {
                 <div className="autocomplete-dropdown-container">
-                  {/* {loading && <div>Loading...</div>} */}
                   {suggestions.map((suggestion, index) => {
                     const className = suggestion.active
                       ? "suggestion-item--active"
@@ -82,18 +81,23 @@ function Modalcurrent() {
               }
             </div>
           )}
-        </PlacesAutocomplete>
+        </PlacesAutocomplete> */}
+        <form onSubmit={edit}>
+        <input type="text"
+        required
+        value={currentLocation} 
+        onChange={(e)=>setcurrentLocation(e.target.value)}
+        placeholder="currentlocation..."/>
         <br/>
 
         <button
           disabled={currentLocation === "" ? true : false}
-          onClick={() => {
-            // closeModal(false);
-            edit();
-          }}
+       
+          type='submit'
         >
           submit
         </button>
+        </form>
         
       </div>
     </div>

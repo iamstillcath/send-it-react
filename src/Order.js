@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import PlacesAutocomplete from "react-places-autocomplete";
+import { useHistory } from "react-router-dom";
 
 const Order = () => {
   const [itemDescription, setitemDescription] = useState("");
@@ -11,13 +12,10 @@ const Order = () => {
   const [recipientName, setrecipientName] = useState("");
   const [recipientNumber, setrecipientNumber] = useState("");
   const [phoneErr, setphoneErr] = useState("");
+  const history =useHistory()
 
 
-  const token = localStorage.getItem("token");
-  if(!token){
-    window.location="/login"
-  }
-
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     const order = {
@@ -33,7 +31,7 @@ const Order = () => {
       const token = localStorage.getItem("token");
 
       if (!token) {
-        window.location = "/login";
+        history.push("/login");
       }
 
       const url = "https://backfiles.herokuapp.com";
@@ -51,7 +49,8 @@ const Order = () => {
           if (data.message === "order successfully created") {
             alert("parcel created successfully!");
             localStorage.setItem("userId", data.data.id);
-            window.location = "/user";
+             history.push("/user");
+             
           } else {
             alert(data.errors.recipientNumber);
           }
@@ -61,8 +60,8 @@ const Order = () => {
 
   const handleDelete = (e) => {
     localStorage.clear();
-    console.clear();
   };
+
 
   function phoneValid(phoneNumber) {
     const pattern = /^(\+|00)[0-9]{1,3}[0-9]{7,14}(?:x.+)?$/;
@@ -89,6 +88,7 @@ const Order = () => {
   return (
     <div className="order">
       <Link to="/user">
+      
         <button>View Created Orders</button>
       </Link>
       <br />
